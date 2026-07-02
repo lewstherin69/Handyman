@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, MapPin, Calendar, Clock, DollarSign, CheckCircle2, AlertCircle, Loader2, ArrowRight } from 'lucide-react';
+import { Search, MapPin, Calendar, Clock, DollarSign, CheckCircle2, AlertCircle, ArrowRight } from 'lucide-react';
+import StatusBadge from '../components/StatusBadge';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 function TrackRequest() {
   const [searchParams] = useSearchParams();
@@ -39,14 +41,12 @@ function TrackRequest() {
     }
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Pending': return 'bg-amber-500/10 text-amber-500 border-amber-500/20';
-      case 'Scheduled': return 'bg-blue-500/10 text-blue-500 border-blue-500/20';
-      case 'In Progress': return 'bg-indigo-500/10 text-indigo-500 border-indigo-500/20';
-      case 'Completed': return 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20';
-      case 'Cancelled': return 'bg-rose-500/10 text-rose-500 border-rose-500/20';
-      default: return 'bg-slate-500/10 text-slate-400 border-slate-500/20';
+  const formatDate = (dateStr) => {
+    if (!dateStr) return 'To be scheduled';
+    try {
+      return new Date(dateStr).toLocaleDateString(undefined, { dateStyle: 'long' });
+    } catch {
+      return dateStr;
     }
   };
 
@@ -87,12 +87,7 @@ function TrackRequest() {
           </button>
         </form>
 
-        {loading && (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="w-12 h-12 text-amber-500 animate-spin mb-4" />
-            <p className="text-slate-400">Fetching request details...</p>
-          </div>
-        )}
+        {loading && <LoadingSpinner text="Fetching request details..." />}
 
         {error && (
           <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-8 flex flex-col items-center text-center">
@@ -108,9 +103,7 @@ function TrackRequest() {
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Ticket ID</p>
                 <h2 className="text-2xl font-mono font-bold text-white">{request.ticket_id}</h2>
               </div>
-              <div className={`px-4 py-2 rounded-full border text-sm font-bold ${getStatusColor(request.status)}`}>
-                {request.status}
-              </div>
+              <StatusBadge status={request.status} size="lg" />
             </div>
 
             <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -141,7 +134,7 @@ function TrackRequest() {
                     <div className="flex items-center gap-3">
                       <Calendar className="w-4 h-4 text-amber-500" />
                       <span className="text-slate-300">
-                        {request.scheduled_date ? new Date(request.scheduled_date).toLocaleDateString(undefined, { dateStyle: 'long' }) : 'To be scheduled'}
+                        {formatDate(request.scheduled_date)}
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
@@ -157,7 +150,7 @@ function TrackRequest() {
                     <div className="bg-slate-900 rounded-2xl p-5 border border-slate-700/50">
                       <div className="flex justify-between items-center mb-4">
                         <span className="text-slate-400">Total Estimate:</span>
-                        <span className="text-2xl font-bold text-white">${request.total_price.toFixed(2)}</span>
+                        <span className="text-2xl font-bold text-white">${Number(request.total_price).toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between items-center mb-6 text-sm">
                         <span className="text-slate-400">Payment Status:</span>

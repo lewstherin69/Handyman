@@ -36,7 +36,8 @@ function SubmitRequest() {
         const data = await response.json();
         navigate(`/track?ticket=${data.ticket_id}&success=true`);
       } else {
-        alert('Failed to submit request. Please try again.');
+        const err = await response.json().catch(() => ({}));
+        alert(err.error || 'Failed to submit request. Please try again.');
       }
     } catch (err) {
       console.error(err);
@@ -45,6 +46,8 @@ function SubmitRequest() {
       setLoading(false);
     }
   };
+
+  const inputClass = "w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all text-white";
 
   return (
     <div className="py-12 bg-slate-900 min-h-screen">
@@ -56,7 +59,6 @@ function SubmitRequest() {
 
         <form onSubmit={handleSubmit} className="bg-slate-800 border border-slate-700 rounded-3xl p-8 shadow-2xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            {/* Name */}
             <div>
               <label className="block text-sm font-medium text-slate-400 mb-2 flex items-center gap-2">
                 <User className="w-4 h-4" /> Full Name
@@ -68,11 +70,10 @@ function SubmitRequest() {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="John Doe"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all text-white"
+                className={inputClass}
               />
             </div>
 
-            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-slate-400 mb-2 flex items-center gap-2">
                 <Mail className="w-4 h-4" /> Email Address
@@ -84,11 +85,10 @@ function SubmitRequest() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="john@example.com"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all text-white"
+                className={inputClass}
               />
             </div>
 
-            {/* Phone */}
             <div>
               <label className="block text-sm font-medium text-slate-400 mb-2 flex items-center gap-2">
                 <Phone className="w-4 h-4" /> Phone Number
@@ -100,11 +100,10 @@ function SubmitRequest() {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="(555) 000-0000"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all text-white"
+                className={inputClass}
               />
             </div>
 
-            {/* Category */}
             <div>
               <label className="block text-sm font-medium text-slate-400 mb-2 flex items-center gap-2">
                 <Hammer className="w-4 h-4" /> Service Category
@@ -113,7 +112,7 @@ function SubmitRequest() {
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all text-white appearance-none"
+                className={`${inputClass} appearance-none`}
               >
                 <option>General Repair</option>
                 <option>Plumbing</option>
@@ -125,7 +124,6 @@ function SubmitRequest() {
             </div>
           </div>
 
-          {/* Address */}
           <div className="mb-8">
             <label className="block text-sm font-medium text-slate-400 mb-2 flex items-center gap-2">
               <MapPin className="w-4 h-4" /> Service Address
@@ -137,11 +135,10 @@ function SubmitRequest() {
               value={formData.address}
               onChange={handleChange}
               placeholder="123 Main St, Apt 4B, City, State"
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all text-white"
+              className={inputClass}
             />
           </div>
 
-          {/* Scheduling */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             <div>
               <label className="block text-sm font-medium text-slate-400 mb-2 flex items-center gap-2">
@@ -152,7 +149,7 @@ function SubmitRequest() {
                 name="preferred_date"
                 value={formData.preferred_date}
                 onChange={handleChange}
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all text-white"
+                className={inputClass}
               />
             </div>
             <div>
@@ -163,7 +160,7 @@ function SubmitRequest() {
                 name="preferred_time"
                 value={formData.preferred_time}
                 onChange={handleChange}
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all text-white"
+                className={inputClass}
               >
                 <option>Anytime</option>
                 <option>Morning (8AM - 12PM)</option>
@@ -173,7 +170,6 @@ function SubmitRequest() {
             </div>
           </div>
 
-          {/* Description */}
           <div className="mb-8">
             <label className="block text-sm font-medium text-slate-400 mb-2 flex items-center gap-2">
               <Info className="w-4 h-4" /> Description of Work
@@ -185,7 +181,7 @@ function SubmitRequest() {
               onChange={handleChange}
               rows="4"
               placeholder="Please provide as much detail as possible..."
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all text-white"
+              className={inputClass}
             ></textarea>
           </div>
 
