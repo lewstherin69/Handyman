@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, User, ShieldCheck, AlertCircle } from 'lucide-react';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 function AdminLogin() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
     if (token) {
       navigate('/admin/dashboard');
+    } else {
+      setCheckingAuth(false);
     }
   }, [navigate]);
 
@@ -41,6 +45,10 @@ function AdminLogin() {
       setLoading(false);
     }
   };
+
+  if (checkingAuth) {
+    return <LoadingSpinner text="Checking authentication..." />;
+  }
 
   return (
     <div className="py-20 bg-slate-900 min-h-screen flex items-center justify-center px-4">
