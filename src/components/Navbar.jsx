@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Hammer, ClipboardList, Search, Lock, Menu, X } from 'lucide-react';
+import { Hammer, ClipboardList, Search, Lock, Menu, X, Image as ImageIcon } from 'lucide-react';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,6 +25,10 @@ export default function Navbar() {
             <Link to="/track" className="flex items-center gap-2 hover:text-amber-400 transition-colors">
               <Search className="w-4 h-4" />
               <span>Track Request</span>
+            </Link>
+            <Link to="/gallery" className="flex items-center gap-2 hover:text-amber-400 transition-colors">
+              <ImageIcon className="w-4 h-4" />
+              <span>Gallery</span>
             </Link>
             <Link to="/admin" className="flex items-center gap-2 hover:text-amber-400 transition-colors opacity-60 hover:opacity-100">
               <Lock className="w-4 h-4" />
@@ -61,6 +65,14 @@ export default function Navbar() {
           >
             <Search className="text-amber-400" />
             <span>Track Request</span>
+          </Link>
+          <Link 
+            to="/gallery" 
+            className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-700"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <ImageIcon className="text-amber-400" />
+            <span>Gallery</span>
           </Link>
           <Link 
             to="/admin" 
