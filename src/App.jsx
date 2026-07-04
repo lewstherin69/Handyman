@@ -7,6 +7,7 @@ import SubmitRequest from './pages/SubmitRequest';
 import TrackRequest from './pages/TrackRequest';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import Gallery from './pages/Gallery';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/submit" element={<SubmitRequest />} />
             <Route path="/track" element={<TrackRequest />} />
+            <Route path="/gallery" element={<Gallery />} />
             <Route path="/admin" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
           </Routes>
